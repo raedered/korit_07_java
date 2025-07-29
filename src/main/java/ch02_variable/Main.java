@@ -55,7 +55,7 @@ public class Main {
          */
 
         System.out.println(scoreEnglish);
-        // qustn - 값이 바뀔 수 있음.
+        // 함수 - 값이 바뀔 수 있음.
         scoreEnglish = 90;              // 재대입할 때는 자료형 명시 X
         System.out.println(scoreEnglish);
 
