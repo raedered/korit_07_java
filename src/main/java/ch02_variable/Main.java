@@ -114,7 +114,7 @@ public class Main {
         // 문자열은 연산이 아니라 "나열"됩니다.
 
         // 문자열은 '순서'가 중요합니다.
-        // 근데 나중에 배욽텐데
+        // 근데 나중에 배울텐데
         Integer width5 = 500;
         Integer width6 = 600;
         System.out.println(width5 + width6);    // 근데 대문자로 시작하는 Integer가 있긴 합니다.
