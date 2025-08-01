@@ -70,9 +70,9 @@ public class Method01 {
         Scanner scanner = new Scanner(System.in);
         String myName = "";
         int myAge = 0;
-        System.out.println("이름을 입력하세요 >>> ");
+        System.out.print("이름을 입력하세요 >>> ");
         myName = scanner.nextLine();                // 사실 이 nextLine();이 매서드입니다. -> 메서드의  결과값을 myName이라는
-        System.out.println("나이를 입력하세요 >>> ");  // 변수에 저장 했습니다.
+        System.out.print("나이를 입력하세요 >>> ");  // 변수에 저장 했습니다.
         myAge = scanner.nextInt();
         System.out.println(introduce(myName, myAge));   // 그리고 그 myName  myAge라는 결과값을
                                                         // 우리가 정의한 introduce()매서드의 argument로 사용되어
