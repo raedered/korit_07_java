@@ -1,5 +1,7 @@
 package ch15_casting.centralcontrol;
 
+import ch09_classes.Constructor;
+
 public class CentralControl {
     // 필드 선언
     private Power[] deviceArray;
@@ -25,7 +27,14 @@ public class CentralControl {
         }
         deviceArray[emptyIndex] = device;   // private으로 적용해놔서 method를 경유했습니다.
         // public이면 main에서 바로 위의 코드를 집어넣으면 되겠죠.
-        System.out.println("장치가 연결되었습니다.");
+        System.out.println(device.getClass().getSimpleName() + " 장치가 연결되었습니다.");
+        /*
+            .getClass() -> 클래스명을 return하는 method + 패키지 경로 포함
+            .getClass().getSimpleName()  -> 클래스명만 출력됨.
+            현재 보시면 method의 결과값을 가지고 다시 . 찍어서 그다음 method를 호출했습니다.
+            이상의 개념을 chaining method라고 해서 return값의 유형을 명확하게 알고 있어야
+            그다음 어떤 method를 실행시킬 것인지를 알 수 있습니다.
+         */
     }
 
     private int checkEmpty() { // 메서드인데 private 썻습니다. Main에서 굳이
@@ -47,5 +56,99 @@ public class CentralControl {
         음수값을 지정하는 경우도 있는데,
         나중에 위에 있는 addDevice() 메서드에서 if(checkEmpty() == -89
      */
+
+    public void powerOn() {
+        /*
+            해당 클래스의 필드인 Power[] 배열 내에 있는 객체들은 기본적으로
+            Power의 서브 클래스의 객체들입니다.
+            즉, on() / off() method를 공통적으로 지니고 있습니다.
+            그리고 Power 자료형으로 업캐스팅도 되어있습니다.
+         */
+        for(int i = 0; i < deviceArray.length; i++) {
+            if(deviceArray[i] == null){
+                System.out.println("장치가 없어 전원을 켜지 않았습니다.");
+                continue;   // break;는 반복문을 즉시 종료하고, return;은 method를
+                // 즉시 종료하는데, continue;의 경우에는
+                // 현재 반복만 종료하고 그다음 반복문으로 넘어갑니다.
+                // 즉 deviceArray[3] 주소지에 객체가 없어 null이 잇다면
+                // 67번 라인의 조건문이 실행될텐데
+                // " 장치가 없어 전원을 켜지 않았습니다." 가 출력되고
+                // 곧장 devicearray[4]를 확인하게 됩니다.
+            }
+            deviceArray[i].on();
+        }
+    }
+
+
+    public void powerOff() {
+        for( Power device : deviceArray){
+
+            if(device == null) {
+                System.out.println("장치가 없어 전원을 끄지 않았습니다.");
+                continue;
+            }
+            device.off();
+        }
+    }
+
+    /*
+        해당 배열 내에 각 객체들이 들어가있습니다.
+        객체명.getClass().getSinpleName() 을 활용하면 클래스 네임만 출력된다는것을 확인 할 수 있는데,
+        deviceArray를 반복 돌려서 몇 번 인뎃스에 어떤 클래스의 객체가 있는지 표시하는
+        showInfo 메서드를 정의하시오.
+        실행 예
+        슬롯 [ 1 ] 번 : Conputer
+        슬롯 [ 2 ] 번 : LED
+        ...
+        슬롯 [ 10] 번 : Empty
+     */
+    public void showInfo() {
+        for(int i = 0; i < deviceArray.length; i++) {
+            if(deviceArray[i] == null){
+                System.out.println("슬롯 [ " + (i + 1) + " ] 번 : " + "Empty");
+                continue;
+            }
+
+            System.out.println("슬롯 [ " + (i + 1) + " ] 번 : " + deviceArray[i].getClass().getSimpleName());
+        }
+    }
+    // 이제 배열 내부를 돌면서 각 element들의 고유 메서드들을 실행시켜볼겁니다.
+    // 논리적으로는 말이 안됩니다....
+
+    public void performSecificMethod() {
+        for(Power device : deviceArray) {
+            if(device instanceof AirConditioner) {  // Power의 서브클래스가 절못된 다운캐스팅을 하지 않도록 하는 조건문
+                AirConditioner airConditioner = (AirConditioner)device; //명시적 다운 캐스팅
+                airConditioner.changeMode();
+            }else if(device instanceof Computer) {
+                Computer computer = (Computer) device;
+                computer.compute();
+            }else if(device instanceof LED) {
+                LED led = (LED) device;
+                led.changeColor();
+            }else if(device instanceof Mouse) {
+                Mouse mouse = (Mouse) device;
+                mouse.leftClick();
+            }else if(device instanceof Speaker) {
+                Speaker speaker = (Speaker) device;
+                speaker.changeEqual();
+            }else if(device == null) {
+                System.out.println("장치가 비어있습니다.");
+            } else if (device instanceof Printer) {
+                Printer printer = (Printer) device;
+                printer.print();
+            } else {        // 아직 instanceof 연산자를 통해서 조건물을 추가하지 못한 class및
+                            // 추후 update를 통해서 다른 기기들을 지원할 때는 } else 사이에 else if문을 추가해야함
+                System.out.println("실행할수 없습니다.");
+            }
+        }
+    }
+
+    // 이상의 수업 과정들을 전부 거쳣 을때, Printer 클래스를 정의하고 Power interface를 implement하고
+    // 고유 메서드로 print() -> "프린터가 인쇄를 합니다" 출력도리 수 있도록 정의하고,
+    // Main에서 printer1을 cetralControl에 추가 on() / off()를 실행한 후게
+    // print() 메서드도 centralControl을 통헤 실행하시오.
+
+
 }
 
