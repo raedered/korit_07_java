@@ -5,6 +5,7 @@ import java.util.*;
 public class MapList {
     public static void main(String[] args) {
         List<Map<String, Object>> customers = new ArrayList<Map<String, Object>>();
+
         Map<String, Object> custom1 = new HashMap<>();
         custom1.put("name", "홍길동");
         custom1.put("rating", "vip");
